@@ -3,3 +3,7 @@ numpy
 imageio
 flake8
 isort
+matplotlib
+opencv-contrib-python
+scipy
+jupyter
