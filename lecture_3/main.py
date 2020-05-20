@@ -5,17 +5,60 @@ from PIL import Image
 
 
 class ImageProcessing:
-    def __init__(self, path, number):
-        self.path = path
-        self.number = number
-        self.im, self.rgb = self.get_image_data(path)
-        self.width, self.height = self.im.size
-        self.kernel = np.array([
-            [1/16, 2/16, 1/16],
-            [2/16, 4/16, 2/16],
-            [1/16, 2/16, 1/16],
-        ])
+    def __init__(self, path_src, path_tmp):
+        self.img = cv2.imread(path_src)
+        temp = cv2.imread(path_tmp)
+
+        # グレースケール変換
+        self.gray = cv2.cvtColor(self.img, cv2.COLOR_RGB2GRAY)
+        self.temp = cv2.cvtColor(temp, cv2.COLOR_RGB2GRAY)
+
+        # テンプレート画像の高さ・幅
+        self.h, self.w = self.temp.shape
+
+        # self.number = 10 # number
+        # self.im, self.rgb = self.get_image_data(path)
+        # self.width, self.height = self.im.size
+        # self.kernel = np.array([
+        #     [1/16, 2/16, 1/16],
+        #     [2/16, 4/16, 2/16],
+        #     [1/16, 2/16, 1/16],
+        # ])
         # self.show(self.rgb, 'normal', 255)
+
+    def template_matching_ssd(self, src, temp):
+        # 画像の高さ・幅を取得
+        h, w = src.shape
+        ht, wt = temp.shape[0], temp.shape[1]
+        print(h, w)
+        print(temp.shape, ht, wt)
+
+        # スコア格納用の二次元配列
+        score = np.empty((h-ht, w-wt))
+
+        # 走査
+        for dy in range(0, h - ht):
+            for dx in range(0, w - wt):
+                #　二乗誤差の和を計算
+                diff = (src[dy:dy + ht, dx:dx + wt] - temp)**2
+                score[dy, dx] = diff.sum()
+        
+        print(score)
+
+        # スコアが最小の走査位置を返す
+        pt = np.unravel_index(score.argmin(), score.shape)
+
+        return (pt[1], pt[0])
+    
+    def main(self):
+        pt = self.template_matching_ssd(self.gray, self.temp)
+
+        print((pt[1], pt[0]))
+        # テンプレートマッチングの結果を出力
+        cv2.rectangle(self.img, (pt[0], pt[1]), (pt[0] + self.w, pt[1] + self.h), (0, 0, 200), 3)
+
+        # 結果を出力
+        cv2.imwrite('./output/ssd2.png', self.img)
 
     def get_image_data(self, path):
         im = Image.open(path)
@@ -166,5 +209,8 @@ class ImageProcessing:
 
 
 if __name__ == '__main__':
-    path_1 = './input/1-0004-1.jpg'
-    path_2 = './input/1-0004-2.jpg'
+    path_src = './input/1-004-1.jpg'
+    path_tmp = './input/test.png'
+
+    process = ImageProcessing(path_src, path_tmp)
+    process.main()
