@@ -37,12 +37,15 @@ class ImageProcessing:
         return array
 
     def get_contrast_data(self):
-        is_show = False
+        is_show = True
 
         array = self.get_monochrome_data()
 
         if is_show:
             plt.hist(array, range(0, 255))
+            plt.xlabel('pixel values')
+            plt.ylabel('ratio of pixels')
+            plt.savefig('./data/contrast/image_{}_of_hist.jpg'.format(self.number))
             plt.show()
 
         max_value, min_value = max(array), min(array)
@@ -50,19 +53,22 @@ class ImageProcessing:
 
         if is_show:
             plt.hist(contrast_array, range(0, 255))
+            plt.xlabel('pixel values')
+            plt.ylabel('ratio of pixels')
+            plt.savefig('./data/contrast/image_{}_of_hist_of_no.jpg'.format(self.number))
             plt.show()
         cv2.imwrite('./data/contrast/image_{}.jpg'.format(self.number), contrast_array.reshape(self.height, self.width))
 
     def get_cdf_data(self):
-        is_show = False
+        is_show = True
 
         img = np.array(Image.open(self.path).convert('L'), 'f')
         hist, bins = np.histogram(img.flatten(), bins=256)
 
-        if is_show:
-            plt.plot(hist)
-            plt.xlim(0, 256)
-            plt.show()
+        # if is_show:
+        #     plt.plot(hist)
+        #     plt.xlim(0, 256)
+        #     plt.show()
 
         cdf = hist.cumsum()
         cdf = 255 * cdf / cdf[-1]
@@ -80,10 +86,13 @@ class ImageProcessing:
         if is_show:
             plt.plot(hist2)
             plt.xlim(0, 256)
+            plt.xlabel('pixel values')
+            plt.ylabel('ratio of pixels')
+            plt.savefig('./data/contrast/image_{}_of_hist_of_cdf.jpg'.format(self.number))
             plt.show()
         cv2.imwrite('./data/contrast/image_{}_cdf.jpg'.format(self.number), img2.reshape(img.shape))
 
-    def display_cv_image(self, img, e_img, format='.png'):
+    def display_cv_image(self, img, e_img, format='.jpg'):
         cv2.imwrite('./data/contrast/test.jpg', img)
 
     def add_edge(self):
@@ -95,7 +104,7 @@ class ImageProcessing:
             int((WID-H)/2):int((WID+H)/2),
             int((WID-W)/2):int((WID+W)/2)
         ] = img
-        self.display_cv_image(img, e_img, '.png')
+        self.display_cv_image(img, e_img, '.jpg')
         return e_img
 
     def affin(self, img, m):
@@ -118,7 +127,7 @@ class ImageProcessing:
     def geometric_transformation(self):
         e_img = self.add_edge()
         m = self.rotation_matrix(np.pi / 4)
-        self.display_cv_image(self.affin(e_img, m), '.png')
+        self.display_cv_image(self.affin(e_img, m), '.jpg')
     
     def local_processing(self, fill_value=-1):
         # get kernel size
@@ -159,6 +168,7 @@ class ImageProcessing:
 if __name__ == '__main__':
     number = 2
     path = './data/local_{}.jpg'.format(number)
+    # path = './data/image_{}.jpg'.format(number)
     # path = './data/image_{}.jpg'.format(number)
     image_processing = ImageProcessing(path, number)
     # image_processing.get_contrast_data()
