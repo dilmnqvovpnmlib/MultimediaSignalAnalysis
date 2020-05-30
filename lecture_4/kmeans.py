@@ -23,7 +23,7 @@ def k_mean(original_img, k):
 
     #STEP2
     # 20回繰り返す
-    for i in range(20):
+    for i in range(10):
         #STEP2-1
         print("ranning at iteration No." + str(i))
         sums = []
@@ -70,7 +70,7 @@ if __name__ == '__main__':
     img = Image.open(filename).convert("RGB")
 
     # k平均法による減色処理
-    reduce_img = k_mean(img, 2)
+    reduce_img = k_mean(img, 5)
 
     # 画像データの更新とファイル出力
     reduce_img.save("reduce_image_test.jpg")
