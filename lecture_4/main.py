@@ -8,6 +8,7 @@ from numpy.random import randint
 from PIL import Image, ImageDraw
 
 
+# 判別分析法の処理を実装
 def discriminant_analysis(input_file_path):
     img = cv2.imread(input_file_path)
     # 画像をグレースケールに変換
@@ -60,6 +61,7 @@ def discriminant_analysis(input_file_path):
     return gray
 
 
+# 画像の多値化を実装するkmeans法の処理の実装
 def k_mean(original_img, k):
     w, h = original_img.size
 
@@ -114,6 +116,7 @@ def rgb2gray(rgb):
     return np.dot(rgb[..., :3], [0.299, 0.587, 0.114]).astype(np.uint8)
 
 
+# ハフ変換の処理を実装
 def hough_line(img, angle_step=1, lines_are_white=True, value_threshold=5):
     # Rho と Theta の範囲を設定
     thetas = np.deg2rad(np.arange(-90.0, 90.0, angle_step))
