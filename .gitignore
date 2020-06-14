@@ -140,3 +140,5 @@ cython_debug/
 .python-version
 
 .env
+
+lecture_5/input
