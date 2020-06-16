@@ -1,15 +1,14 @@
 import glob
 
 import cv2
-import numpy as np
-import scipy.spatial.distance as distance
-import scipy.stats as stats
-from sklearn.datasets import load_boston
-import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import numpy.linalg as LA
+import pandas as pd
+import scipy.spatial.distance as distance
+import scipy.stats as stats
 from PIL import Image
+
 
 class knn:
     def __init__(self, k):
