@@ -7,3 +7,5 @@ matplotlib
 opencv-contrib-python
 scipy
 jupyter
+sklearn
+pandas
