@@ -83,7 +83,7 @@ w_opt = w_init
 Disc = np.zeros(N)
 
 # 重みを更新する処理
-iter = 1500
+iter = 500
 for i in range(iter):
     for n in range(N):
         w_opt, Disc[n] = OptimalWeight(w_opt, x_train[n, :], t_train[n], c=0.5)

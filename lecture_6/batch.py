@@ -12,8 +12,8 @@ face_data_size = len(face_files)
 non_face_data_size = len(non_face_files)
 
 n = 1
-train_face_data_size = 1000#face_data_size * n // 10
-train_non_face_data_size = 1000# non_face_data_size * n // 10
+train_face_data_size = 4500#face_data_size * n // 10
+train_non_face_data_size = 4500# non_face_data_size * n // 10
 
 print("教師データ数: {}".format(train_face_data_size + train_non_face_data_size))
 

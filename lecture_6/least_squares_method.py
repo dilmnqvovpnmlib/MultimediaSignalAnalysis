@@ -12,7 +12,7 @@ non_face_files = glob.glob('./input/non-face/*.jpg')
 face_data_size = len(face_files)
 non_face_data_size = len(non_face_files)
 
-n = 1
+n = 4
 train_face_data_size = face_data_size * n // 10
 train_non_face_data_size = non_face_data_size * n // 10
 
@@ -40,14 +40,16 @@ label = np.concatenate([face_labels, non_face_labels])
 length = samples.shape[0]
 samples = np.hstack([np.array([np.ones(length)]).T, samples])
 
+
+use_test_data_size = 1000
 # テストデータとそのラベルを作成
 face_test_data_size = len(face_files[train_face_data_size:])
 non_test_face_data_size = len(non_face_files[train_non_face_data_size:])
 np_test_data = np.array(
-    getTestData(face_files[train_face_data_size:train_face_data_size+1000])
-    + getTestData(non_face_files[train_non_face_data_size:train_non_face_data_size+1000])
+    getTestData(face_files[train_face_data_size:train_face_data_size+use_test_data_size])
+    + getTestData(non_face_files[train_non_face_data_size:train_non_face_data_size+use_test_data_size])
 )
-ans = [1 for _ in range(1000)] + [-1 for _ in range(1000)]
+ans = [1 for _ in range(use_test_data_size)] + [-1 for _ in range(use_test_data_size)]
 
 # b(教師ベクトル) を作成
 face = np.array([-1 for _ in range(length)])
